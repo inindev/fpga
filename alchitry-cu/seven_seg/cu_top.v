@@ -1,5 +1,5 @@
 
-module seven_seg (
+module cu_top (
     input clk,
     input rst_n,
     output reg [7:0] led,

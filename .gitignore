@@ -1,5 +1,5 @@
 *.bin
-*.blif
+*.json
 *.asc
 
 .DS_Store

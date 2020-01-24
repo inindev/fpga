@@ -2,22 +2,22 @@
 all: sweep.bin
 
 prog: sweep.bin
-	iceprog sweep.bin
+	iceprog $^
 
 reset:
 	iceprog .
 
-sweep.blif: sweep.v
-	yosys -p 'synth_ice40 -top sweep -blif sweep.blif' sweep.v
+sweep.json: cu_top.v
+	yosys -p 'synth_ice40 -top cu_top -json $@' $^
 
-sweep.asc: sweep.blif sweep.pcf
-	arachne-pnr -d 8k -P cb132 -p sweep.pcf -o sweep.asc sweep.blif
+sweep.asc: sweep.json sweep.pcf
+	nextpnr-ice40 --hx8k --package cb132 --json sweep.json  --pcf sweep.pcf  --asc $@
 
 sweep.bin: sweep.asc
-	icetime -d hx8k -c 100 sweep.asc
-	icepack sweep.asc sweep.bin
+	icetime -d hx8k -c 100 $^
+	icepack $^ $@
 
 clean:
-	rm -f sweep.blif sweep.asc sweep.bin
+	rm -f sweep.json sweep.asc sweep.bin
 
 .PHONY: all prog reset clean

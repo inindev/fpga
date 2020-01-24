@@ -2,22 +2,22 @@
 all: seven_seg.bin
 
 prog: seven_seg.bin
-	iceprog seven_seg.bin
+	iceprog $^
 
 reset:
 	iceprog .
 
-seven_seg.blif: seven_seg.v
-	yosys -p 'synth_ice40 -top seven_seg -blif seven_seg.blif' seven_seg.v
+seven_seg.json: cu_top.v
+	yosys -p 'synth_ice40 -top cu_top -json $@' $^
 
-seven_seg.asc: seven_seg.blif seven_seg.pcf
-	arachne-pnr -d 8k -P cb132 -p seven_seg.pcf -o seven_seg.asc seven_seg.blif
+seven_seg.asc: seven_seg.json seven_seg.pcf
+	nextpnr-ice40 --hx8k --package cb132 --json seven_seg.json  --pcf seven_seg.pcf  --asc $@
 
 seven_seg.bin: seven_seg.asc
-	icetime -d hx8k -c 100 seven_seg.asc
-	icepack seven_seg.asc seven_seg.bin
+	icetime -d hx8k -c 100 $^
+	icepack $^ $@
 
 clean:
-	rm -f seven_seg.blif seven_seg.asc seven_seg.bin
+	rm -f seven_seg.json seven_seg.asc seven_seg.bin
 
 .PHONY: all prog reset clean
