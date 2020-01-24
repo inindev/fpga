@@ -41,7 +41,7 @@ module cu_top (
   parameter SEG_6   = ~8'b01111101;  // 6
   parameter SEG_7   = ~8'b00000111;  // 7
   parameter SEG_8   = ~8'b01111111;  // 8
-  parameter SEG_9   = ~8'b01101111;  // 9
+  parameter SEG_9   = ~8'b01100111;  // 9
   parameter SEG_A   = ~8'b01110111;  // A
   parameter SEG_B   = ~8'b01111100;  // b
   parameter SEG_C   = ~8'b00111001;  // C
