@@ -1,5 +1,6 @@
 *.bin
 *.json
 *.asc
+merged.pcf
 
 .DS_Store
